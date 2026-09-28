@@ -1,43 +1,80 @@
-def cadastrar_livro(titulo, autor, disponibilidade):
+
+biblioteca = {}
+
+def adicionar():
+    """Adiciona um livro à biblioteca.
     """
-    Cadastra um novo livro na biblioteca.
+    livro = {}
+    livro["titulo"] = input("Adicione um título: ")    
+    livro["autor"] = input("Quem é o autor? ")
+    livro["disponivel"] = True
 
-    Args:
-        titulo (str): O título do livro.
-        autor (str): O autor do livro.
-        disponibilidade (bool): Indica se o livro está disponível para empréstimo.
 
-    Returns:
-        str: uma string formatada com os dados do livro.
+    biblioteca[livro["titulo"]] = livro
+    print("Livro adicionado!")
+
+
+def estante():
+    if biblioteca:
+        print("\nLivros disponíveis:")
+
+        for titulo, livro in biblioteca.items():
+            print(f"{titulo} - {livro['autor']} ({'Disponível' if livro['disponivel'] else 'Indisponível'})")
+    else:
+        print("A biblioteca está vazia.")
+
+
+def pesquisar():
+    """Pesquisa um livro na biblioteca.
     """
-    livro = {
-        'titulo': titulo,
-        'autor': autor,
-        'disponibilidade': disponibilidade
-    }
+    titulo = input("Qual livro está procurando? ")
 
-    livro_str = f"""Título: {livro['titulo']},
-Autor: {livro['autor']},
-Disponibilidade: {livro['disponibilidade']}"""
+    if titulo in biblioteca:
+        print(f"{titulo} - {biblioteca[titulo]['autor']} ({'Disponível' if biblioteca[titulo]['disponivel'] else 'Indisponível'})")
+    else:
+        print("Livro não encontrado.")
 
-    
-    return livro_str
 
-def listar_livros(*livros):
+def emprestar():
+    """Empresta um livro da biblioteca.
     """
-    Lista os livros cadastrados na biblioteca.
+    titulo = input("Qual livro você quer emprestar? ")
 
-    Args:
-        *livros: Uma lista de livros cadastrados.
+    if titulo in biblioteca:
+        if biblioteca[titulo]["disponivel"]:
+            biblioteca[titulo]["disponivel"] = False
+            print("Empréstimo feito com sucesso!")
+        else:
+            print("Esse livro não está disponível.")
+    else:
+        print("Livro não encontrado.")
 
-    Returns:
-        str: uma string formatada com os dados dos livros.
-    """
-    livros_str = ""
-    for livro in livros:
-        livros_str = f"Títulos: {livros}"
-    return livros_str
 
-print(cadastrar_livro("Dom Casmurro", "Machado de Assis", True))
+while True:
+    print("\n--- BIBLIOTECA ---")
+    print("1. Adicionar um livro")
+    print("2. Ver estante")
+    print("3. Pesquisar um livro")
+    print("4. Emprestar um livro")
+    print("5. Fechar a biblioteca")
 
-print(listar_livros("Dom Casmurro","O Cortiço","Memórias Póstumas de Brás Cubas"))
+    escolha = input("Escolha uma opção: ")
+
+    if escolha == "1":
+        adicionar()
+
+    elif escolha == "2":
+        estante()
+
+    elif escolha == "3":
+        pesquisar()
+
+    elif escolha == "4":
+        emprestar()
+
+    elif escolha == "5":
+        print("Até a próxima!")
+        break
+
+    else:
+        print("Opção inválida.")
